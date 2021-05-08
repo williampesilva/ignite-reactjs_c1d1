@@ -31,6 +31,7 @@ export function TaskList() {
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    // Melhor forma de realizar a operação é acessando a lista através do .map e fazendo a alteração do isComplete.
 
     const newTaskList = tasks.map(task => task.id === id ? {  // Mapeamos a lista de tasks, e quando for encontrado a task selecionada,
       ...task,                                                // passamos toda a informação ja existente no objeto e,
@@ -38,12 +39,11 @@ export function TaskList() {
     } : task);                                                // Caso não seja a task selecionada, somente devolvemos para a nova lista.
 
     setTasks(newTaskList) // Retorna a nova lista a ser exibida com a task que marcamos no checkbox.
-
-    // const selectedTask = tasks.filter(task => task.id === id);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    // Melhor forma de realizar a operação é filtrar todas as tasks exceto a que será retirada, e subir no setTask.
 
     const listWithoutDeletedTask = tasks.filter(task => task.id !== id); // Cria uma lista excluindo a task que será deletada.
 
