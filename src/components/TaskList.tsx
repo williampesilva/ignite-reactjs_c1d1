@@ -16,14 +16,38 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+
+    if(!newTaskTitle) return; // Não permite que seja retornado nada caso a nova task não tenha um título.
+
+    const newTask = {       // Aqui estou criando um estado temporário, seguinto o padrão da task.
+      id: Math.random(),    // Gerando um id aleatório.
+      title: newTaskTitle,  // Capturando o título digitado no campo.
+      isComplete: false,    // Deixando por padrão a taks como incompleta.
+    }
+
+    setTasks(oldState => [...oldState, newTask]); // Neste momento, estamos inserindo a newTask dentro setTasks, mantendo tudo que ja estava dentro dele anteriormente [...oldState, newTask]
+    setNewTaskTitle(''); // Aqui estou resetando o valor do input para ficar limpo após submeter uma task.
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+
+    const newTaskList = tasks.map(task => task.id === id ? {  // Mapeamos a lista de tasks, e quando for encontrado a task selecionada,
+      ...task,                                                // passamos toda a informação ja existente no objeto e,
+      isComplete: !task.isComplete                            // Alteramos o estado do isComplete para true ou false.
+    } : task);                                                // Caso não seja a task selecionada, somente devolvemos para a nova lista.
+
+    setTasks(newTaskList) // Retorna a nova lista a ser exibida com a task que marcamos no checkbox.
+
+    // const selectedTask = tasks.filter(task => task.id === id);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+
+    const listWithoutDeletedTask = tasks.filter(task => task.id !== id); // Cria uma lista excluindo a task que será deletada.
+
+    setTasks(listWithoutDeletedTask); // Retorna a nova lista a ser exibida sem a task deletada.
   }
 
   return (
