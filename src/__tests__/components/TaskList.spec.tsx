@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import { TaskList } from '../../components/TaskList';
 
 describe('App Page', () => {
@@ -127,5 +127,24 @@ describe('App Page', () => {
 
     expect(addedSecondTask).toBeInTheDocument();
     expect(addedSecondTask).not.toHaveClass('completed');
+  })
+
+  it('should be able to reopen a completed task', () => {
+    render(<TaskList />);
+
+    const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
+    fireEvent.change(taskInput, { target: { value: 'Beber água' } });
+    fireEvent.click(screen.getByTestId('add-task-button'));
+
+    const task = screen.getByTestId('task');
+    const checkbox = screen.getByRole('checkbox');
+
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+    expect(task).toHaveClass('completed');
+
+    fireEvent.click(checkbox);
+    expect(checkbox).not.toBeChecked();
+    expect(task).not.toHaveClass('completed');
   })
 })
